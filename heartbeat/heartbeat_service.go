@@ -62,7 +62,7 @@ func (s *HeartbeatService) Ping(ctx context.Context, in *pb.PingReq) (*pb.PongRe
 func (s *HeartbeatService) freshTimeOutTime() {
 	s.client.lock.Lock()
 	defer s.client.lock.Unlock()
-	s.client.nextTimeOutTime = s.client.nextTimeOutTime.Add(timeout * time.Second)
+	s.client.nextTimeOutTime = time.Now().Add(timeout * time.Second)
 }
 
 func (s *HeartbeatService) judgeTimeOut() {
@@ -84,10 +84,10 @@ func StartPingService() {
 
 	for {
 		for index, ipServe := range GIpServe {
-			if !ipServe.IsAlive {
-				// 该节点已下线
-				continue
-			}
+			//if !ipServe.IsAlive {
+			//	// 该节点已下线
+			//	continue
+			//}
 
 			// 向 从节点 发送心跳
 			conn, err := grpc.Dial(ipServe.Ip, grpc.WithInsecure())

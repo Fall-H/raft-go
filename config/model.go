@@ -3,15 +3,23 @@ package config
 type Config struct {
 	Info      InfoConfig
 	Heartbeat HeartbeatConfig
-	Serve     []ServeConfig
+	Vote      VoteConfig
 }
 
 type InfoConfig struct {
 	Type string
+	Term int32
+	Name string
 }
 
 type HeartbeatConfig struct {
-	Port int
+	Port  int
+	Serve []ServeConfig
+}
+
+type VoteConfig struct {
+	Port  int
+	Serve []ServeConfig
 }
 
 type ServeConfig struct {

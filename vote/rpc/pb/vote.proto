@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "/vote/rpc/pb";
+
+message VoteReq {
+  string name = 2;
+  int32 term = 3;
+  int32 vote = 4;
+}
+
+message VoteRes {
+  string name = 2;
+  int32 term = 3;
+  int32 vote = 4;
+}
+
+service Vote {
+  rpc SendVote(VoteReq) returns (VoteRes);
+}

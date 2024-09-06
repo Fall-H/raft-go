@@ -19,5 +19,7 @@ func init() {
 		log.Fatal("read config failed: %v", err)
 	}
 
+	viper.WatchConfig()
+
 	viper.Unmarshal(&GConfig)
 }

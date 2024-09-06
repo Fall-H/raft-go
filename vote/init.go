@@ -1,8 +1,6 @@
-package heartbeat
+package vote
 
-import (
-	config "raft/config"
-)
+import "raft/config"
 
 func init() {
 	for _, serve := range config.GConfig.Heartbeat.Serve {

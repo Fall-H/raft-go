@@ -8,10 +8,10 @@ import (
 var GConfig Config
 
 func init() {
-	viper.SetConfigName("config")
+	viper.SetConfigFile("./config.toml")
 	viper.SetConfigType("toml")
-
-	viper.AddConfigPath(".\\config")
+	viper.SetConfigName("config")
+	viper.AddConfigPath("./config")
 
 	// 读取配置文件
 	err := viper.ReadInConfig()

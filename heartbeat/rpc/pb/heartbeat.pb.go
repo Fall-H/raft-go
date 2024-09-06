@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.33.0
 // 	protoc        v3.19.4
-// source: heartbeat/rpc/proto/heartbeat.proto
+// source: heartbeat/rpc/pb/heartbeat.proto
 
 package pb
 
@@ -20,32 +20,32 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type PingRpcModel struct {
+type PingReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Ip        string `protobuf:"bytes,1,opt,name=ip,proto3" json:"ip,omitempty"`
-	Timestamp int32  `protobuf:"varint,2,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Ip      string `protobuf:"bytes,1,opt,name=ip,proto3" json:"ip,omitempty"`
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 }
 
-func (x *PingRpcModel) Reset() {
-	*x = PingRpcModel{}
+func (x *PingReq) Reset() {
+	*x = PingReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_heartbeat_rpc_proto_heartbeat_proto_msgTypes[0]
+		mi := &file_heartbeat_rpc_pb_heartbeat_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
 }
 
-func (x *PingRpcModel) String() string {
+func (x *PingReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PingRpcModel) ProtoMessage() {}
+func (*PingReq) ProtoMessage() {}
 
-func (x *PingRpcModel) ProtoReflect() protoreflect.Message {
-	mi := &file_heartbeat_rpc_proto_heartbeat_proto_msgTypes[0]
+func (x *PingReq) ProtoReflect() protoreflect.Message {
+	mi := &file_heartbeat_rpc_pb_heartbeat_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,51 +56,51 @@ func (x *PingRpcModel) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PingRpcModel.ProtoReflect.Descriptor instead.
-func (*PingRpcModel) Descriptor() ([]byte, []int) {
-	return file_heartbeat_rpc_proto_heartbeat_proto_rawDescGZIP(), []int{0}
+// Deprecated: Use PingReq.ProtoReflect.Descriptor instead.
+func (*PingReq) Descriptor() ([]byte, []int) {
+	return file_heartbeat_rpc_pb_heartbeat_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *PingRpcModel) GetIp() string {
+func (x *PingReq) GetIp() string {
 	if x != nil {
 		return x.Ip
 	}
 	return ""
 }
 
-func (x *PingRpcModel) GetTimestamp() int32 {
+func (x *PingReq) GetMessage() string {
 	if x != nil {
-		return x.Timestamp
+		return x.Message
 	}
-	return 0
+	return ""
 }
 
-type PongRpcModel struct {
+type PongRes struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Ip        string `protobuf:"bytes,1,opt,name=ip,proto3" json:"ip,omitempty"`
-	Timestamp int32  `protobuf:"varint,2,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Ip      string `protobuf:"bytes,1,opt,name=ip,proto3" json:"ip,omitempty"`
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 }
 
-func (x *PongRpcModel) Reset() {
-	*x = PongRpcModel{}
+func (x *PongRes) Reset() {
+	*x = PongRes{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_heartbeat_rpc_proto_heartbeat_proto_msgTypes[1]
+		mi := &file_heartbeat_rpc_pb_heartbeat_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
 }
 
-func (x *PongRpcModel) String() string {
+func (x *PongRes) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PongRpcModel) ProtoMessage() {}
+func (*PongRes) ProtoMessage() {}
 
-func (x *PongRpcModel) ProtoReflect() protoreflect.Message {
-	mi := &file_heartbeat_rpc_proto_heartbeat_proto_msgTypes[1]
+func (x *PongRes) ProtoReflect() protoreflect.Message {
+	mi := &file_heartbeat_rpc_pb_heartbeat_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -111,85 +111,80 @@ func (x *PongRpcModel) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PongRpcModel.ProtoReflect.Descriptor instead.
-func (*PongRpcModel) Descriptor() ([]byte, []int) {
-	return file_heartbeat_rpc_proto_heartbeat_proto_rawDescGZIP(), []int{1}
+// Deprecated: Use PongRes.ProtoReflect.Descriptor instead.
+func (*PongRes) Descriptor() ([]byte, []int) {
+	return file_heartbeat_rpc_pb_heartbeat_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PongRpcModel) GetIp() string {
+func (x *PongRes) GetIp() string {
 	if x != nil {
 		return x.Ip
 	}
 	return ""
 }
 
-func (x *PongRpcModel) GetTimestamp() int32 {
+func (x *PongRes) GetMessage() string {
 	if x != nil {
-		return x.Timestamp
+		return x.Message
 	}
-	return 0
+	return ""
 }
 
-var File_heartbeat_rpc_proto_heartbeat_proto protoreflect.FileDescriptor
+var File_heartbeat_rpc_pb_heartbeat_proto protoreflect.FileDescriptor
 
-var file_heartbeat_rpc_proto_heartbeat_proto_rawDesc = []byte{
-	0x0a, 0x23, 0x68, 0x65, 0x61, 0x72, 0x74, 0x62, 0x65, 0x61, 0x74, 0x2f, 0x72, 0x70, 0x63, 0x2f,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x68, 0x65, 0x61, 0x72, 0x74, 0x62, 0x65, 0x61, 0x74, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x02, 0x70, 0x62, 0x22, 0x3c, 0x0a, 0x0c, 0x50, 0x69, 0x6e,
-	0x67, 0x52, 0x70, 0x63, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x70, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x69, 0x6d,
-	0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x74, 0x69,
-	0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x22, 0x3c, 0x0a, 0x0c, 0x50, 0x6f, 0x6e, 0x67, 0x52,
-	0x70, 0x63, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x70, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73,
-	0x74, 0x61, 0x6d, 0x70, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09, 0x74, 0x69, 0x6d, 0x65,
-	0x73, 0x74, 0x61, 0x6d, 0x70, 0x32, 0x69, 0x0a, 0x09, 0x68, 0x65, 0x61, 0x72, 0x74, 0x62, 0x65,
-	0x61, 0x74, 0x12, 0x2d, 0x0a, 0x07, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x70, 0x63, 0x12, 0x10, 0x2e,
-	0x70, 0x62, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x70, 0x63, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x1a,
-	0x10, 0x2e, 0x70, 0x62, 0x2e, 0x50, 0x6f, 0x6e, 0x67, 0x52, 0x70, 0x63, 0x4d, 0x6f, 0x64, 0x65,
-	0x6c, 0x12, 0x2d, 0x0a, 0x07, 0x50, 0x6f, 0x6e, 0x67, 0x52, 0x70, 0x63, 0x12, 0x10, 0x2e, 0x70,
-	0x62, 0x2e, 0x50, 0x6f, 0x6e, 0x67, 0x52, 0x70, 0x63, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x1a, 0x10,
-	0x2e, 0x70, 0x62, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x70, 0x63, 0x4d, 0x6f, 0x64, 0x65, 0x6c,
-	0x42, 0x03, 0x5a, 0x01, 0x2e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_heartbeat_rpc_pb_heartbeat_proto_rawDesc = []byte{
+	0x0a, 0x20, 0x68, 0x65, 0x61, 0x72, 0x74, 0x62, 0x65, 0x61, 0x74, 0x2f, 0x72, 0x70, 0x63, 0x2f,
+	0x70, 0x62, 0x2f, 0x68, 0x65, 0x61, 0x72, 0x74, 0x62, 0x65, 0x61, 0x74, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x12, 0x02, 0x70, 0x62, 0x22, 0x33, 0x0a, 0x07, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x65,
+	0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69,
+	0x70, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x33, 0x0a, 0x07, 0x50,
+	0x6f, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x02, 0x69, 0x70, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+	0x32, 0x34, 0x0a, 0x10, 0x48, 0x65, 0x61, 0x72, 0x74, 0x62, 0x65, 0x61, 0x74, 0x53, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x12, 0x20, 0x0a, 0x04, 0x50, 0x69, 0x6e, 0x67, 0x12, 0x0b, 0x2e, 0x70,
+	0x62, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x1a, 0x0b, 0x2e, 0x70, 0x62, 0x2e, 0x50,
+	0x6f, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x42, 0x13, 0x5a, 0x11, 0x2f, 0x68, 0x65, 0x61, 0x72, 0x74,
+	0x62, 0x65, 0x61, 0x74, 0x2f, 0x72, 0x70, 0x63, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
-	file_heartbeat_rpc_proto_heartbeat_proto_rawDescOnce sync.Once
-	file_heartbeat_rpc_proto_heartbeat_proto_rawDescData = file_heartbeat_rpc_proto_heartbeat_proto_rawDesc
+	file_heartbeat_rpc_pb_heartbeat_proto_rawDescOnce sync.Once
+	file_heartbeat_rpc_pb_heartbeat_proto_rawDescData = file_heartbeat_rpc_pb_heartbeat_proto_rawDesc
 )
 
-func file_heartbeat_rpc_proto_heartbeat_proto_rawDescGZIP() []byte {
-	file_heartbeat_rpc_proto_heartbeat_proto_rawDescOnce.Do(func() {
-		file_heartbeat_rpc_proto_heartbeat_proto_rawDescData = protoimpl.X.CompressGZIP(file_heartbeat_rpc_proto_heartbeat_proto_rawDescData)
+func file_heartbeat_rpc_pb_heartbeat_proto_rawDescGZIP() []byte {
+	file_heartbeat_rpc_pb_heartbeat_proto_rawDescOnce.Do(func() {
+		file_heartbeat_rpc_pb_heartbeat_proto_rawDescData = protoimpl.X.CompressGZIP(file_heartbeat_rpc_pb_heartbeat_proto_rawDescData)
 	})
-	return file_heartbeat_rpc_proto_heartbeat_proto_rawDescData
+	return file_heartbeat_rpc_pb_heartbeat_proto_rawDescData
 }
 
-var file_heartbeat_rpc_proto_heartbeat_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_heartbeat_rpc_proto_heartbeat_proto_goTypes = []interface{}{
-	(*PingRpcModel)(nil), // 0: pb.PingRpcModel
-	(*PongRpcModel)(nil), // 1: pb.PongRpcModel
+var file_heartbeat_rpc_pb_heartbeat_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_heartbeat_rpc_pb_heartbeat_proto_goTypes = []interface{}{
+	(*PingReq)(nil), // 0: pb.PingReq
+	(*PongRes)(nil), // 1: pb.PongRes
 }
-var file_heartbeat_rpc_proto_heartbeat_proto_depIdxs = []int32{
-	0, // 0: pb.heartbeat.PingRpc:input_type -> pb.PingRpcModel
-	1, // 1: pb.heartbeat.PongRpc:input_type -> pb.PongRpcModel
-	1, // 2: pb.heartbeat.PingRpc:output_type -> pb.PongRpcModel
-	0, // 3: pb.heartbeat.PongRpc:output_type -> pb.PingRpcModel
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+var file_heartbeat_rpc_pb_heartbeat_proto_depIdxs = []int32{
+	0, // 0: pb.HeartbeatService.Ping:input_type -> pb.PingReq
+	1, // 1: pb.HeartbeatService.Ping:output_type -> pb.PongRes
+	1, // [1:2] is the sub-list for method output_type
+	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_heartbeat_rpc_proto_heartbeat_proto_init() }
-func file_heartbeat_rpc_proto_heartbeat_proto_init() {
-	if File_heartbeat_rpc_proto_heartbeat_proto != nil {
+func init() { file_heartbeat_rpc_pb_heartbeat_proto_init() }
+func file_heartbeat_rpc_pb_heartbeat_proto_init() {
+	if File_heartbeat_rpc_pb_heartbeat_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_heartbeat_rpc_proto_heartbeat_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PingRpcModel); i {
+		file_heartbeat_rpc_pb_heartbeat_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PingReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -200,8 +195,8 @@ func file_heartbeat_rpc_proto_heartbeat_proto_init() {
 				return nil
 			}
 		}
-		file_heartbeat_rpc_proto_heartbeat_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PongRpcModel); i {
+		file_heartbeat_rpc_pb_heartbeat_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PongRes); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -217,18 +212,18 @@ func file_heartbeat_rpc_proto_heartbeat_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_heartbeat_rpc_proto_heartbeat_proto_rawDesc,
+			RawDescriptor: file_heartbeat_rpc_pb_heartbeat_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_heartbeat_rpc_proto_heartbeat_proto_goTypes,
-		DependencyIndexes: file_heartbeat_rpc_proto_heartbeat_proto_depIdxs,
-		MessageInfos:      file_heartbeat_rpc_proto_heartbeat_proto_msgTypes,
+		GoTypes:           file_heartbeat_rpc_pb_heartbeat_proto_goTypes,
+		DependencyIndexes: file_heartbeat_rpc_pb_heartbeat_proto_depIdxs,
+		MessageInfos:      file_heartbeat_rpc_pb_heartbeat_proto_msgTypes,
 	}.Build()
-	File_heartbeat_rpc_proto_heartbeat_proto = out.File
-	file_heartbeat_rpc_proto_heartbeat_proto_rawDesc = nil
-	file_heartbeat_rpc_proto_heartbeat_proto_goTypes = nil
-	file_heartbeat_rpc_proto_heartbeat_proto_depIdxs = nil
+	File_heartbeat_rpc_pb_heartbeat_proto = out.File
+	file_heartbeat_rpc_pb_heartbeat_proto_rawDesc = nil
+	file_heartbeat_rpc_pb_heartbeat_proto_goTypes = nil
+	file_heartbeat_rpc_pb_heartbeat_proto_depIdxs = nil
 }

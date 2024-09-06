@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v3.19.4
-// source: heartbeat/rpc/proto/heartbeat.proto
+// source: heartbeat/rpc/pb/heartbeat.proto
 
 package pb
 
@@ -19,141 +19,103 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Heartbeat_PingRpc_FullMethodName = "/pb.heartbeat/PingRpc"
-	Heartbeat_PongRpc_FullMethodName = "/pb.heartbeat/PongRpc"
+	HeartbeatService_Ping_FullMethodName = "/pb.HeartbeatService/Ping"
 )
 
-// HeartbeatClient is the client API for Heartbeat service.
+// HeartbeatServiceClient is the client API for HeartbeatService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type HeartbeatClient interface {
-	PingRpc(ctx context.Context, in *PingRpcModel, opts ...grpc.CallOption) (*PongRpcModel, error)
-	PongRpc(ctx context.Context, in *PongRpcModel, opts ...grpc.CallOption) (*PingRpcModel, error)
+type HeartbeatServiceClient interface {
+	Ping(ctx context.Context, in *PingReq, opts ...grpc.CallOption) (*PongRes, error)
 }
 
-type heartbeatClient struct {
+type heartbeatServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewHeartbeatClient(cc grpc.ClientConnInterface) HeartbeatClient {
-	return &heartbeatClient{cc}
+func NewHeartbeatServiceClient(cc grpc.ClientConnInterface) HeartbeatServiceClient {
+	return &heartbeatServiceClient{cc}
 }
 
-func (c *heartbeatClient) PingRpc(ctx context.Context, in *PingRpcModel, opts ...grpc.CallOption) (*PongRpcModel, error) {
+func (c *heartbeatServiceClient) Ping(ctx context.Context, in *PingReq, opts ...grpc.CallOption) (*PongRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(PongRpcModel)
-	err := c.cc.Invoke(ctx, Heartbeat_PingRpc_FullMethodName, in, out, cOpts...)
+	out := new(PongRes)
+	err := c.cc.Invoke(ctx, HeartbeatService_Ping_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *heartbeatClient) PongRpc(ctx context.Context, in *PongRpcModel, opts ...grpc.CallOption) (*PingRpcModel, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(PingRpcModel)
-	err := c.cc.Invoke(ctx, Heartbeat_PongRpc_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// HeartbeatServer is the server API for Heartbeat service.
-// All implementations must embed UnimplementedHeartbeatServer
+// HeartbeatServiceServer is the server API for HeartbeatService service.
+// All implementations must embed UnimplementedHeartbeatServiceServer
 // for forward compatibility.
-type HeartbeatServer interface {
-	PingRpc(context.Context, *PingRpcModel) (*PongRpcModel, error)
-	PongRpc(context.Context, *PongRpcModel) (*PingRpcModel, error)
-	mustEmbedUnimplementedHeartbeatServer()
+type HeartbeatServiceServer interface {
+	Ping(context.Context, *PingReq) (*PongRes, error)
+	mustEmbedUnimplementedHeartbeatServiceServer()
 }
 
-// UnimplementedHeartbeatServer must be embedded to have
+// UnimplementedHeartbeatServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedHeartbeatServer struct{}
+type UnimplementedHeartbeatServiceServer struct{}
 
-func (UnimplementedHeartbeatServer) PingRpc(context.Context, *PingRpcModel) (*PongRpcModel, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PingRpc not implemented")
+func (UnimplementedHeartbeatServiceServer) Ping(context.Context, *PingReq) (*PongRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
-func (UnimplementedHeartbeatServer) PongRpc(context.Context, *PongRpcModel) (*PingRpcModel, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PongRpc not implemented")
-}
-func (UnimplementedHeartbeatServer) mustEmbedUnimplementedHeartbeatServer() {}
-func (UnimplementedHeartbeatServer) testEmbeddedByValue()                   {}
+func (UnimplementedHeartbeatServiceServer) mustEmbedUnimplementedHeartbeatServiceServer() {}
+func (UnimplementedHeartbeatServiceServer) testEmbeddedByValue()                          {}
 
-// UnsafeHeartbeatServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to HeartbeatServer will
+// UnsafeHeartbeatServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to HeartbeatServiceServer will
 // result in compilation errors.
-type UnsafeHeartbeatServer interface {
-	mustEmbedUnimplementedHeartbeatServer()
+type UnsafeHeartbeatServiceServer interface {
+	mustEmbedUnimplementedHeartbeatServiceServer()
 }
 
-func RegisterHeartbeatServer(s grpc.ServiceRegistrar, srv HeartbeatServer) {
-	// If the following call pancis, it indicates UnimplementedHeartbeatServer was
+func RegisterHeartbeatServiceServer(s grpc.ServiceRegistrar, srv HeartbeatServiceServer) {
+	// If the following call pancis, it indicates UnimplementedHeartbeatServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Heartbeat_ServiceDesc, srv)
+	s.RegisterService(&HeartbeatService_ServiceDesc, srv)
 }
 
-func _Heartbeat_PingRpc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PingRpcModel)
+func _HeartbeatService_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PingReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(HeartbeatServer).PingRpc(ctx, in)
+		return srv.(HeartbeatServiceServer).Ping(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Heartbeat_PingRpc_FullMethodName,
+		FullMethod: HeartbeatService_Ping_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HeartbeatServer).PingRpc(ctx, req.(*PingRpcModel))
+		return srv.(HeartbeatServiceServer).Ping(ctx, req.(*PingReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Heartbeat_PongRpc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PongRpcModel)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(HeartbeatServer).PongRpc(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Heartbeat_PongRpc_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HeartbeatServer).PongRpc(ctx, req.(*PongRpcModel))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-// Heartbeat_ServiceDesc is the grpc.ServiceDesc for Heartbeat service.
+// HeartbeatService_ServiceDesc is the grpc.ServiceDesc for HeartbeatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Heartbeat_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.heartbeat",
-	HandlerType: (*HeartbeatServer)(nil),
+var HeartbeatService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.HeartbeatService",
+	HandlerType: (*HeartbeatServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "PingRpc",
-			Handler:    _Heartbeat_PingRpc_Handler,
-		},
-		{
-			MethodName: "PongRpc",
-			Handler:    _Heartbeat_PongRpc_Handler,
+			MethodName: "Ping",
+			Handler:    _HeartbeatService_Ping_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "heartbeat/rpc/proto/heartbeat.proto",
+	Metadata: "heartbeat/rpc/pb/heartbeat.proto",
 }

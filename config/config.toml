@@ -1,2 +1,13 @@
+[info]
+type = "master"
+
 [heartbeat]
 port = 8889
+
+[[serve]]
+name = "serve1"
+ip = "127.0.0.1:8890"
+
+[[serve]]
+name = "serve2"
+ip = "127.0.0.1:8891"

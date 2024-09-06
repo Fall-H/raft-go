@@ -1,9 +1,20 @@
 package config
 
 type Config struct {
-	Heartbeat HeartbeatConfig `json:"heartbeat"`
+	Info      InfoConfig
+	Heartbeat HeartbeatConfig
+	Serve     []ServeConfig
+}
+
+type InfoConfig struct {
+	Type string
 }
 
 type HeartbeatConfig struct {
-	Port int `json:"port"`
+	Port int
+}
+
+type ServeConfig struct {
+	Name string
+	Ip   string
 }

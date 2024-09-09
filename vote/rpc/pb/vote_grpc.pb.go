@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Vote_SendVote_FullMethodName = "/pb.Vote/SendVote"
+	Vote_SendVote_FullMethodName         = "/pb.Vote/SendVote"
+	Vote_ChangeStateSlave_FullMethodName = "/pb.Vote/ChangeStateSlave"
 )
 
 // VoteClient is the client API for Vote service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VoteClient interface {
 	SendVote(ctx context.Context, in *VoteReq, opts ...grpc.CallOption) (*VoteRes, error)
+	ChangeStateSlave(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type voteClient struct {
@@ -47,11 +49,22 @@ func (c *voteClient) SendVote(ctx context.Context, in *VoteReq, opts ...grpc.Cal
 	return out, nil
 }
 
+func (c *voteClient) ChangeStateSlave(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Vote_ChangeStateSlave_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VoteServer is the server API for Vote service.
 // All implementations must embed UnimplementedVoteServer
 // for forward compatibility.
 type VoteServer interface {
 	SendVote(context.Context, *VoteReq) (*VoteRes, error)
+	ChangeStateSlave(context.Context, *Empty) (*Empty, error)
 	mustEmbedUnimplementedVoteServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedVoteServer struct{}
 
 func (UnimplementedVoteServer) SendVote(context.Context, *VoteReq) (*VoteRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendVote not implemented")
+}
+func (UnimplementedVoteServer) ChangeStateSlave(context.Context, *Empty) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeStateSlave not implemented")
 }
 func (UnimplementedVoteServer) mustEmbedUnimplementedVoteServer() {}
 func (UnimplementedVoteServer) testEmbeddedByValue()              {}
@@ -104,6 +120,24 @@ func _Vote_SendVote_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Vote_ChangeStateSlave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VoteServer).ChangeStateSlave(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Vote_ChangeStateSlave_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VoteServer).ChangeStateSlave(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Vote_ServiceDesc is the grpc.ServiceDesc for Vote service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var Vote_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendVote",
 			Handler:    _Vote_SendVote_Handler,
+		},
+		{
+			MethodName: "ChangeStateSlave",
+			Handler:    _Vote_ChangeStateSlave_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

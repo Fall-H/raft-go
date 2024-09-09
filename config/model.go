@@ -13,12 +13,12 @@ type InfoConfig struct {
 }
 
 type HeartbeatConfig struct {
-	Port  int
+	Port  string
 	Serve []ServeConfig
 }
 
 type VoteConfig struct {
-	Port  int
+	Port  string
 	Serve []ServeConfig
 }
 

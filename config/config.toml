@@ -1,24 +1,24 @@
 [info]
-type = "master"
+type = "slave"
 term = 0
 name = "serve0"
 
 [heartbeat]
-port = 8889
-    [[serve]]
+port = "127.0.0.1:8889"
+    [[heartbeat.serve]]
     name = "serve1"
     ip = "127.0.0.1:8890"
 
-    [[serve]]
+    [[heartbeat.serve]]
     name = "serve2"
     ip = "127.0.0.1:8891"
 
 [vote]
-port = 8789
-    [[serve]]
+port = "127.0.0.1:8789"
+    [[vote.serve]]
     name = "serve1"
     ip = "127.0.0.1:8790"
 
-    [[serve]]
+    [[vote.serve]]
     name = "serve2"
     ip = "127.0.0.1:8791"

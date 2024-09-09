@@ -8,14 +8,21 @@ message VoteReq {
   string name = 2;
   int32 term = 3;
   int32 vote = 4;
+  string state = 5;
 }
 
 message VoteRes {
   string name = 2;
   int32 term = 3;
   int32 vote = 4;
+  string state = 5;
+  string ip = 6;
+}
+
+message Empty {
 }
 
 service Vote {
   rpc SendVote(VoteReq) returns (VoteRes);
+  rpc ChangeStateSlave(Empty) returns (Empty);
 }

@@ -8,8 +8,10 @@ import (
 	"raft/config"
 	"raft/model"
 	"raft/observer"
-	"raft/util"
+	"raft/op"
 	"raft/vote/rpc/pb"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -40,15 +42,30 @@ func (s *Service) SendVote(ctx context.Context, in *pb.VoteReq) (*pb.VoteRes, er
 		vote = s.vote
 	}
 
-	s.state = model.StateVoted
-
 	return &pb.VoteRes{Name: name, Term: term, Vote: vote, State: s.state, Ip: config.GConfig.Heartbeat.Port}, nil
 }
 
-func (s *Service) ChangeStateSlave(ctx context.Context, in *pb.Empty) (*pb.Empty, error) {
+func (s *Service) ChangeStateSlave(ctx context.Context, in *pb.VoteReq) (*pb.VoteRes, error) {
 	s.state = model.StateSlave
+	config.GConfig.Heartbeat.MasterIp = in.Ip
+	config.GConfig.Info.Term = in.Term
 	s.ObserverState.NotifyAll(s.state)
-	return &pb.Empty{}, nil
+
+	go syncOpList(in.OpList)
+
+	return &pb.VoteRes{}, nil
+}
+
+func syncOpList(opList []string) {
+	model.Number = 0
+
+	for _, item := range opList {
+		temp := strings.Split(item, ":")
+		number, _ := strconv.Atoi(temp[1])
+		op.Op(temp[0], int32(number))
+	}
+
+	model.OpList = opList
 }
 
 func (s *Service) CreateVoteServe() {
@@ -90,27 +107,14 @@ func (s *Service) CreateVoteClient() {
 	for {
 		s.vote = int32(1)
 		for index, ipServe := range GIpServe {
-			conn, err := grpc.Dial(ipServe.Ip, grpc.WithInsecure())
-			if err != nil {
-				log.Print("did not connect: %v", err)
-			}
-			defer conn.Close()
-			c := pb.NewVoteClient(conn)
-
-			res, err := c.SendVote(context.Background(), &pb.VoteReq{Name: config.GConfig.Info.Name,
-				Term: config.GConfig.Info.Term, Vote: s.vote})
-			if err != nil {
-				GIpServe[index].IsAlive = false
-				log.Print("did not connect: %v", err)
-			}
-
+			res := makeVoteReq(index, ipServe, s.vote)
 			if res == nil {
 				continue
 			}
 
 			// 判断任期 如果大于自己任期
 			if res.Term > config.GConfig.Info.Term && res.State == model.StateMaster {
-				model.MasterIp = res.Ip
+				config.GConfig.Heartbeat.MasterIp = res.Ip
 				s.ObserverState.NotifyAll(model.StateSlave)
 				return
 			}
@@ -128,11 +132,32 @@ func (s *Service) CreateVoteClient() {
 	}
 }
 
+func makeVoteReq(index int, ipServe model.IpServe, vote int32) *pb.VoteRes {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	conn, err := grpc.Dial(ipServe.Ip, grpc.WithInsecure())
+	if err != nil {
+		log.Print("did not connect: %v", err)
+	}
+	defer conn.Close()
+
+	c := pb.NewVoteClient(conn)
+	res, err := c.SendVote(ctx, &pb.VoteReq{Name: config.GConfig.Info.Name,
+		Term: config.GConfig.Info.Term, Vote: vote})
+	if err != nil {
+		GIpServe[index].IsAlive = false
+		log.Print("did not connect: %v", err)
+	}
+
+	return res
+}
+
 func (s *Service) judgeVote(owenVote int32, otherVote int32, ipServe model.IpServe) bool {
 	// 判断选票
 	if otherVote == owenVote {
 		// 选票一致 重新投票
-		time.Sleep(util.RandomTime(150, 300))
+		time.Sleep(model.Timeout)
 		return false
 	} else if otherVote < owenVote {
 		conn, err := grpc.Dial(ipServe.Ip, grpc.WithInsecure())
@@ -143,7 +168,8 @@ func (s *Service) judgeVote(owenVote int32, otherVote int32, ipServe model.IpSer
 		c := pb.NewVoteClient(conn)
 
 		// 如果自己选票 大于其他人的选票 则自己成为 master
-		c.ChangeStateSlave(context.Background(), &pb.Empty{})
+		config.GConfig.Info.Term += 1
+		c.ChangeStateSlave(context.Background(), &pb.VoteReq{Term: config.GConfig.Info.Term, Ip: config.GConfig.Heartbeat.Port})
 		s.ObserverState.NotifyAll(model.StateMaster)
 		return true
 	} else if otherVote > owenVote {

@@ -28,7 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VoteClient interface {
 	SendVote(ctx context.Context, in *VoteReq, opts ...grpc.CallOption) (*VoteRes, error)
-	ChangeStateSlave(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
+	ChangeStateSlave(ctx context.Context, in *VoteReq, opts ...grpc.CallOption) (*VoteRes, error)
 }
 
 type voteClient struct {
@@ -49,9 +49,9 @@ func (c *voteClient) SendVote(ctx context.Context, in *VoteReq, opts ...grpc.Cal
 	return out, nil
 }
 
-func (c *voteClient) ChangeStateSlave(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
+func (c *voteClient) ChangeStateSlave(ctx context.Context, in *VoteReq, opts ...grpc.CallOption) (*VoteRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
+	out := new(VoteRes)
 	err := c.cc.Invoke(ctx, Vote_ChangeStateSlave_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -64,7 +64,7 @@ func (c *voteClient) ChangeStateSlave(ctx context.Context, in *Empty, opts ...gr
 // for forward compatibility.
 type VoteServer interface {
 	SendVote(context.Context, *VoteReq) (*VoteRes, error)
-	ChangeStateSlave(context.Context, *Empty) (*Empty, error)
+	ChangeStateSlave(context.Context, *VoteReq) (*VoteRes, error)
 	mustEmbedUnimplementedVoteServer()
 }
 
@@ -78,7 +78,7 @@ type UnimplementedVoteServer struct{}
 func (UnimplementedVoteServer) SendVote(context.Context, *VoteReq) (*VoteRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendVote not implemented")
 }
-func (UnimplementedVoteServer) ChangeStateSlave(context.Context, *Empty) (*Empty, error) {
+func (UnimplementedVoteServer) ChangeStateSlave(context.Context, *VoteReq) (*VoteRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeStateSlave not implemented")
 }
 func (UnimplementedVoteServer) mustEmbedUnimplementedVoteServer() {}
@@ -121,7 +121,7 @@ func _Vote_SendVote_Handler(srv interface{}, ctx context.Context, dec func(inter
 }
 
 func _Vote_ChangeStateSlave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(VoteReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -133,7 +133,7 @@ func _Vote_ChangeStateSlave_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: Vote_ChangeStateSlave_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VoteServer).ChangeStateSlave(ctx, req.(*Empty))
+		return srv.(VoteServer).ChangeStateSlave(ctx, req.(*VoteReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

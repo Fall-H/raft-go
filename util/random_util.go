@@ -10,5 +10,5 @@ func RandomInt(min int, max int) int {
 }
 
 func RandomTime(min int, max int) time.Duration {
-	return time.Duration(min+rand.Intn(max-min)) * time.Millisecond
+	return time.Duration(min+rand.Intn(max-min)) * time.Second
 }

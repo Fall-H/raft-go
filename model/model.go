@@ -1,6 +1,7 @@
 package model
 
 import (
+	"raft/util"
 	"sync"
 	"time"
 )
@@ -23,14 +24,15 @@ type IpServe struct {
 }
 
 var (
-	GIpServe []IpServe
 	//PollingTime  = 100 * time.Millisecond
 	//Timeout      = 400 * time.Millisecond
 	//IntervalTime = 200 * time.Millisecond
-	PollingTime  = 10 * time.Second
-	Timeout      = 40 * time.Second
-	IntervalTime = 20 * time.Second
-	MasterIp     = ""
+	PollingTime = 5 * time.Second
+	//Timeout      = util.RandomTime(150, 300) * time.Second
+	Timeout      = util.RandomTime(10, 20)
+	IntervalTime = 5 * time.Second
+	Number       = int32(0)
+	OpList       []string
 )
 
 const (

@@ -9,6 +9,8 @@ message VoteReq {
   int32 term = 3;
   int32 vote = 4;
   string state = 5;
+  string ip = 6;
+  repeated string opList = 7;
 }
 
 message VoteRes {
@@ -19,10 +21,7 @@ message VoteRes {
   string ip = 6;
 }
 
-message Empty {
-}
-
 service Vote {
   rpc SendVote(VoteReq) returns (VoteRes);
-  rpc ChangeStateSlave(Empty) returns (Empty);
+  rpc ChangeStateSlave(VoteReq) returns (VoteRes);
 }

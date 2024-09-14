@@ -14,6 +14,16 @@ message PongRes {
   string message = 2;
 }
 
+message OpReq {
+  string op = 1;
+  int32 number = 2;
+}
+
+message OpRes {
+  bool flag = 1;
+}
+
 service HeartbeatService {
   rpc Ping(PingReq) returns (PongRes);
+  rpc SendOp(OpReq) returns (OpRes);
 }

@@ -5,6 +5,7 @@ import (
 	"raft/heartbeat"
 	"raft/model"
 	"raft/observer"
+	"raft/serve"
 	"raft/vote"
 	"sync"
 	"time"
@@ -27,11 +28,17 @@ func init() {
 		ObserverState: state,
 	}
 
+	serveService := &serve.Service{
+		ObserverState: state,
+	}
+
 	go heartbeatService.CreateRpc()
 	go voteService.CreateVoteServe()
+	go serveService.CreateServe()
 
 	state.Register(heartbeatService)
 	state.Register(voteService)
+	state.Register(serveService)
 
 	state.NotifyAll(config.GConfig.Info.Type)
 }

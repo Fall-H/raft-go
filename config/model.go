@@ -4,6 +4,7 @@ type Config struct {
 	Info      InfoConfig
 	Heartbeat HeartbeatConfig
 	Vote      VoteConfig
+	Serve     ServeInfo
 }
 
 type InfoConfig struct {
@@ -13,8 +14,9 @@ type InfoConfig struct {
 }
 
 type HeartbeatConfig struct {
-	Port  string
-	Serve []ServeConfig
+	MasterIp string
+	Port     string
+	Serve    []ServeConfig
 }
 
 type VoteConfig struct {
@@ -25,4 +27,8 @@ type VoteConfig struct {
 type ServeConfig struct {
 	Name string
 	Ip   string
+}
+
+type ServeInfo struct {
+	Ip string
 }

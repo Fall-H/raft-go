@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	HeartbeatService_Ping_FullMethodName = "/pb.HeartbeatService/Ping"
+	HeartbeatService_Ping_FullMethodName   = "/pb.HeartbeatService/Ping"
+	HeartbeatService_SendOp_FullMethodName = "/pb.HeartbeatService/SendOp"
 )
 
 // HeartbeatServiceClient is the client API for HeartbeatService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HeartbeatServiceClient interface {
 	Ping(ctx context.Context, in *PingReq, opts ...grpc.CallOption) (*PongRes, error)
+	SendOp(ctx context.Context, in *OpReq, opts ...grpc.CallOption) (*OpRes, error)
 }
 
 type heartbeatServiceClient struct {
@@ -47,11 +49,22 @@ func (c *heartbeatServiceClient) Ping(ctx context.Context, in *PingReq, opts ...
 	return out, nil
 }
 
+func (c *heartbeatServiceClient) SendOp(ctx context.Context, in *OpReq, opts ...grpc.CallOption) (*OpRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(OpRes)
+	err := c.cc.Invoke(ctx, HeartbeatService_SendOp_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // HeartbeatServiceServer is the server API for HeartbeatService service.
 // All implementations must embed UnimplementedHeartbeatServiceServer
 // for forward compatibility.
 type HeartbeatServiceServer interface {
 	Ping(context.Context, *PingReq) (*PongRes, error)
+	SendOp(context.Context, *OpReq) (*OpRes, error)
 	mustEmbedUnimplementedHeartbeatServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedHeartbeatServiceServer struct{}
 
 func (UnimplementedHeartbeatServiceServer) Ping(context.Context, *PingReq) (*PongRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedHeartbeatServiceServer) SendOp(context.Context, *OpReq) (*OpRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendOp not implemented")
 }
 func (UnimplementedHeartbeatServiceServer) mustEmbedUnimplementedHeartbeatServiceServer() {}
 func (UnimplementedHeartbeatServiceServer) testEmbeddedByValue()                          {}
@@ -104,6 +120,24 @@ func _HeartbeatService_Ping_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _HeartbeatService_SendOp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OpReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HeartbeatServiceServer).SendOp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: HeartbeatService_SendOp_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HeartbeatServiceServer).SendOp(ctx, req.(*OpReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // HeartbeatService_ServiceDesc is the grpc.ServiceDesc for HeartbeatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var HeartbeatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _HeartbeatService_Ping_Handler,
+		},
+		{
+			MethodName: "SendOp",
+			Handler:    _HeartbeatService_SendOp_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,0 +1,27 @@
+[info]
+type = "slave"
+term = 0
+name = "serve0"
+
+[heartbeat]
+port = "127.0.0.1:8889"
+    [[heartbeat.serve]]
+    name = "serve1"
+    ip = "127.0.0.1:8890"
+
+    [[heartbeat.serve]]
+    name = "serve2"
+    ip = "127.0.0.1:8891"
+
+[vote]
+port = "127.0.0.1:8789"
+    [[vote.serve]]
+    name = "serve1"
+    ip = "127.0.0.1:8790"
+
+    [[vote.serve]]
+    name = "serve2"
+    ip = "127.0.0.1:8791"
+
+[serve]
+ip = "127.0.0.1:8690"

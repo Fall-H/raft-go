@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "/heartbeat/rpc/pb";
+
+message PingReq {
+  string ip = 1;
+  string message = 2;
+}
+
+message PongRes {
+  string ip = 1;
+  string message = 2;
+}
+
+message OpReq {
+  string op = 1;
+  int32 number = 2;
+}
+
+message OpRes {
+  bool flag = 1;
+}
+
+service HeartbeatService {
+  rpc Ping(PingReq) returns (PongRes);
+  rpc SendOp(OpReq) returns (OpRes);
+}

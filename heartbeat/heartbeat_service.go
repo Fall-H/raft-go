@@ -41,15 +41,15 @@ func (s *Service) startPingService() {
 			// 向 从节点 发送心跳
 			conn, err := grpc.DialContext(ctx, ipServe.Ip, grpc.WithInsecure(), grpc.WithBlock())
 			if err != nil {
-				log.Print("did not connect: %v", err)
+				log.Printf("did not connect: %v", err)
 			}
 			defer conn.Close()
 
 			c := pb.NewHeartbeatServiceClient(conn)
-			res, err := c.Ping(ctx, &pb.PingReq{Ip: ipServe.Ip})
+			res, err := c.Ping(ctx, &pb.PingReq{Ip: config.GConfig.Serve.Ip})
 			if err != nil {
 				GIpServe[index].IsAlive = false
-				log.Print("did not connect: %v", err)
+				log.Printf("did not connect: %v", err)
 			} else {
 				log.Println(res.GetMessage())
 			}
@@ -89,7 +89,8 @@ func (s *Service) Ping(ctx context.Context, in *pb.PingReq) (*pb.PongRes, error)
 	// 刷新 自己的过期时长
 	// 并 发送 pong 通知 主节点 存活
 	s.freshTimeOutTime()
-	log.Println("ping " + config.GConfig.Heartbeat.Port)
+	config.GConfig.MasterServe.Ip = in.Ip
+	log.Println("ping " + in.Ip)
 
 	return &pb.PongRes{Ip: config.GConfig.Heartbeat.Port, Message: "pong"}, nil
 }
@@ -99,6 +100,7 @@ func (s *Service) SendOp(ctx context.Context, in *pb.OpReq) (*pb.OpRes, error) {
 	s.freshTimeOutTime()
 
 	op.Op(in.Op, in.Number)
+	log.Println(model.Number)
 	model.OpList = append(model.OpList, in.Op+":"+strconv.Itoa(int(in.Number)))
 
 	return &pb.OpRes{Flag: true}, nil

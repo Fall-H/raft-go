@@ -11,6 +11,7 @@ message VoteReq {
   string state = 5;
   string ip = 6;
   repeated string opList = 7;
+  string materIp = 8;
 }
 
 message VoteRes {
@@ -19,6 +20,7 @@ message VoteRes {
   int32 vote = 4;
   string state = 5;
   string ip = 6;
+  string materIp = 7;
 }
 
 service Vote {

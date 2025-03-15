@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"raft/heartbeat"
 	"raft/heartbeat/rpc/pb"
+	"raft/model"
+	opMethod "raft/op"
 	"strconv"
 )
 
@@ -35,6 +37,8 @@ func route(r *gin.Engine) {
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{})
+		opMethod.Op(op, int32(number))
+
+		c.JSON(http.StatusOK, gin.H{"msg": model.Number})
 	})
 }

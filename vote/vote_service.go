@@ -42,13 +42,20 @@ func (s *Service) SendVote(ctx context.Context, in *pb.VoteReq) (*pb.VoteRes, er
 		vote = s.vote
 	}
 
-	return &pb.VoteRes{Name: name, Term: term, Vote: vote, State: s.state, Ip: config.GConfig.Heartbeat.Port}, nil
+	return &pb.VoteRes{
+		Name:    name,
+		Term:    term,
+		Vote:    vote,
+		State:   s.state,
+		Ip:      config.GConfig.Heartbeat.Port,
+		MaterIp: config.GConfig.Serve.Ip}, nil
 }
 
 func (s *Service) ChangeStateSlave(ctx context.Context, in *pb.VoteReq) (*pb.VoteRes, error) {
 	s.state = model.StateSlave
 	config.GConfig.Heartbeat.MasterIp = in.Ip
 	config.GConfig.Info.Term = in.Term
+	config.GConfig.MasterServe.Ip = in.MaterIp
 	s.ObserverState.NotifyAll(s.state)
 
 	go syncOpList(in.OpList)
